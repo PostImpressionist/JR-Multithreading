@@ -1,0 +1,85 @@
+//task2102;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+/* 
+Сравниваем модификаторы
+*/
+
+public class Solution {
+    public static void main(String[] args) {
+        int classModifiers = Solution.class.getModifiers();
+        System.out.println(isModifierSet(classModifiers, Modifier.PUBLIC));   //true
+        System.out.println(isModifierSet(classModifiers, Modifier.STATIC));   //false
+
+        int methodModifiers = getMainMethod().getModifiers();
+        System.out.println(isModifierSet(methodModifiers, Modifier.STATIC));      //true
+    }
+
+    public static boolean isModifierSet(int allModifiers, int specificModifier) {
+        String allModBin = Integer.toBinaryString(allModifiers),
+                specModBin = Integer.toBinaryString(specificModifier);
+        int result = allModifiers | specificModifier;
+
+
+        return result == allModifiers;
+    }
+
+    private static Method getMainMethod() {
+        Method[] methods = Solution.class.getDeclaredMethods();
+        for (Method method : methods) {
+            if (method.getName().equalsIgnoreCase("main")) return method;
+        }
+
+        return null;
+    }
+    public static int fromByteToInt(byte b){
+        return b<0?(b+127*2+2):b;
+    }
+    public static String fromIntToBin(int x){
+        int i = 0, result = 0;
+        String s = "";
+
+        while( x > 0) {
+            while (x / (int) Math.pow(2, ++i) > 0) ;
+            result = +result + (int) Math.pow(10, i - 1);
+            x = x - (int) Math.pow(2, i - 1);
+            i = 0;
+        } // end while
+        s = result + "";
+        while(s.length() < 8 )
+            s = "0" + s;
+        return s;
+    }
+}
+/*
+Сравниваем модификаторы
+Реализовать логику метода isModifierSet, который проверяет, содержит ли переданный параметр allModifiers
+    значение конкретного модификатора specificModifier.
+
+P.S. Перед выполнением задания ознакомься с классом Modifier и реализацией методов isPublic, isStatic и т.п.
+
+
+Требования:
+1. Метод isModifierSet должен быть статическим.
+2. Метод isModifierSet должен возвращать значение типа boolean.
+3. Метод isModifierSet должен принимать два параметра типа int.
+4. Метод isModifierSet должен возвращать корректное значение в соответствии с условием задачи
+    (true, если заданный модификатор присутствует в allModifiers, иначе false).
+ */
+
+/*
+public static final int	ABSTRACT	        1024        10000000000
+public static final int	FINAL	            16          10000
+public static final int	INTERFACE       	512         1000000000
+public static final int	NATIVE	            256         100000000
+public static final int	PRIVATE	            2           10
+public static final int	PROTECTED	        4           100
+public static final int	PUBLIC	            1           1
+public static final int	STATIC	            8           1000
+public static final int	STRICT	            2048        100000000000
+public static final int	SYNCHRONIZED	    32          100000
+public static final int	TRANSIENT	        128         10000000
+public static final int	VOLATILE	        64          1000000
+ */
