@@ -1,0 +1,107 @@
+//task2113;
+
+import java.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Hippodrome {
+    private List<Horse> horses;
+    public List<Horse> getHorses() {
+        return horses;
+    }
+
+    public Hippodrome(List<Horse> horses) {
+        this.horses = horses;
+    }
+    public static Hippodrome game;
+
+    public static void main(String[] args) throws InterruptedException {
+        Horse first = new Horse("first",3,0);
+        Horse second = new Horse("second",3,0);
+        Horse third = new Horse("third",3,0);
+        List<Horse> horses = new ArrayList<>();
+        horses.add(first);
+        horses.add(second);
+        horses.add(third);
+
+        game = new Hippodrome(horses);
+
+        game.run();
+        game.printWinner();
+    }
+
+    public void run() throws InterruptedException {
+        for (int i = 0; i < 50; i++) {
+           move();
+           print();
+           Thread.sleep(200);
+        }
+    } //end run
+    public void move(){
+        for (Horse h: getHorses())
+            h.move();
+    } // end move
+    void print() throws InterruptedException {
+        for (Horse h: getHorses())
+            h.print();
+        for (int i = 0; i < 10; i++)
+            System.out.println();
+    } // end print
+    public Horse getWinner(){
+        double dMax = 0;
+        Horse winner = null;
+        for (Horse h: getHorses())
+            if(h.distance >= dMax) {
+                dMax = h.distance;
+                winner = h;
+            }
+
+        return winner;
+    }
+    public void printWinner(){
+        System.out.println(String.format("Winner is %s!",getWinner().name));
+    }
+} // end Hippodrome
+
+
+public class Horse {
+    String name;
+    double speed, distance;
+
+    public Horse(String name, double speed, double distance) {
+        this.name = name;
+        this.speed = speed;
+        this.distance = distance;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public double getSpeed() {
+        return speed;
+    }
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+    public double getDistance() {
+        return distance;
+    }
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public void move(){
+        distance += speed * Math.random();
+    }//end move
+    public void print(){
+        for (int i = 0; i < (int)distance; i++)
+            System.out.print(".");
+        System.out.println(getName());
+    }// end print
+} // end Horse
+
+
+
